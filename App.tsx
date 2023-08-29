@@ -1,5 +1,4 @@
 import React from "react";
-import { withExpoSnack } from "nativewind";
 import { Home } from "./src/screens/Home";
 
 const App = () => {
@@ -8,4 +7,4 @@ const App = () => {
   );
 };
 
-export default withExpoSnack(App);
+export default App;

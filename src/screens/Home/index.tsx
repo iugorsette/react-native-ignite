@@ -1,7 +1,6 @@
 import {
   Alert,
   FlatList,
-  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
@@ -12,59 +11,21 @@ import { Participant } from "../../components/Participant";
 import { useState } from "react";
 
 export function Home() {
-  const [participants, setParticipants] = useState([
-    {
-      name: "Iugor Sette",
-    },
-    {
-      name: "Renata Lazarino",
-    },
-    {
-      name: "Higor Sette",
-    },
-    {
-      name: "John Doe",
-    },
-    {
-      name: "Cristiano Ronaldo",
-    },
-    {
-      name: "Lionel Messi",
-    },
-    {
-      name: "Neymar Jr",
-    },
-    {
-      name: "Vini Jr",
-    },
-    {
-      name: "Jhonatan Calleri",
-    },
-    {
-      name: "Lucas Moura",
-    },
-    {
-      name: "Killian Mbappe",
-    },
-    {
-      name: "Karim Benzema",
-    },
-  ]);
+  const [participantName, setParticipantName] = useState("");
+  const [participants, setParticipants] = useState<string[]>([]);
+
   function handleParticipantAdd() {
-    participants.map((participant) => {
-      if (participant.name === "Iugor Sette") {
-        return Alert.alert("Iugor Sette já está na lista!");
-      }
-    });
+    if (participants.includes(participantName)) {
+      return Alert.alert("Erro", "Participante já adicionado.");
+    }
+    setParticipants((prevState) => [...prevState, participantName]);
+    setParticipantName("");
   }
 
   function removeParticipant(name: string) {
-    participants.map((participant) => {
-      if (participant.name === name) {
-        participants.splice(participants.indexOf(participant), 1);
-      }
+    setParticipants((prevState) => {
+      return prevState.filter((participant) => participant !== name);
     });
-    setParticipants([...participants]);
   }
 
   function handleParticipantRemove(name: string) {
@@ -93,6 +54,8 @@ export function Home() {
           style={styles.input}
           placeholder="Nome do participante"
           placeholderTextColor="#6B6B6B"
+          onChangeText={setParticipantName}
+          value={participantName}
         />
 
         <TouchableOpacity style={styles.button} onPress={handleParticipantAdd}>
@@ -102,12 +65,12 @@ export function Home() {
 
       <FlatList
         data={participants}
-        keyExtractor={(item) => item.name}
+        keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <Participant
-            name={item.name}
+            name={item}
             onRemove={() => {
-              handleParticipantRemove(item.name);
+              handleParticipantRemove(item);
             }}
           />
         )}
